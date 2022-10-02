@@ -1,12 +1,14 @@
 // logic.js
 
-console.log("This is logic.js");
+// console.log("This is logic.js");
+
+// Globals 
 
 let features;
 let depthArray = [];
 
+// Create map object 
 
-// Mauritania as center of map
 let map = L.map('map').setView([18.4762, -77.8939], 5);
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -14,23 +16,27 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap'
 }).addTo(map);
 
+// API GeoJSON
+
 const url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
 
 d3.json(url).then(function(data) {
 
-  features = data.features;
+  features = data.features;  
 
-  
+  // Iterate over features
 
   for (let i=0; i<features.length; i++) 
   {
 
       // Use for placing circles on map
+
       let coords = features[i].geometry.coordinates;
       let lon = coords[0];
       let lat = coords[1];
 
       // Use for size of circles, color of circles, and popup text
+
       let depth = parseInt(coords[2]);
       
       if (!Number.isNaN(depth)) {
@@ -51,17 +57,17 @@ d3.json(url).then(function(data) {
 
       let title = features[i].properties.title;
 
-
       // console.log("LON: ", lon);
       // console.log("LAT: ", lat);
       // console.log("DEPTH: ", depth);
       // console.log("MAG: ", mag);
       // console.log("TITLE: ", title);
-      
-      // let marker = L.marker([lon, lat]).addTo(map);
-      // marker.bindPopup(title).openPopup();
+
+      // Size circles
       
       let radius = (50000 * mag) / Math.PI;
+
+      // Light to dark, less opaque to more opaque, for circles based on depth
     
       if (depth <= 10) {
         color = "#2cba00";
@@ -93,8 +99,7 @@ d3.json(url).then(function(data) {
       let popupText = title + "<br><br><b>Depth: </b>" + depth;
      
       circle.bindPopup(popupText);
-      
-      
+            
   }
 
   let ascDepthArray = depthArray.sort(function(a, b){return a-b});
@@ -121,14 +126,4 @@ d3.json(url).then(function(data) {
   
   legend.addTo(map);
 
-
 });
-
-
-
-
-
-
-
-
-
