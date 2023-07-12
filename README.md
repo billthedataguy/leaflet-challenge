@@ -1,9 +1,6 @@
 # Visualizing Data with Leaflet
 
 ## William Vann
-## Unit 15 Bootcamp Homework 
-
-#
 
 ## Description
 
